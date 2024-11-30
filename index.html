@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive Text Editor</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css" integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+  <div class="header">
+    <div class="actions">
+        <div class="contain">
+    <div class="un">
+      <img class="undo" src="p1.png"/>
+      <button id="undo">Undo</button>
+    </div>
+    <div class="un">
+      <button id="redo">Redo</button>
+      <img class="undo" src="p2.png"/>
+    </div>
+        </div>
+    </div>
+  </div>
+  <div class="editor-container">
+    <div id="editor" class="editor"></div>
+  </div>
+  <div class="footer">
+    <select id="font-selector">
+        <option value="Arial" selected>Arial</option>
+        <option value="Courier New">Courier New</option>
+        <option value="Georgia">Georgia</option>
+        <option value="Times New Roman">Times New Roman</option>
+        <option value="Verdana">Verdana</option>
+      </select>
+      <div class="btn">
+      <button id="decrease-font">-</button>
+    <span id="font-size-display">16px</span>
+    <button id="increase-font">+</button>
+    </div>
+    <button id="bold">B</button>
+    <button id="italic">I</button>
+    <button id="underline">U</button>
+
+
+  </div>
+  <button id="add-text"><i class="icon fa-solid fa-up-down"></i> Add Text</button>
+
+  <script src="script.js"></script>
+</body>
+</html>
