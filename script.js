@@ -1,6 +1,6 @@
-let fontSize = 10;
+let fontSize = 16;
 const fontSizeDisplay = document.getElementById('font-size-display');
-const fontSelector = document.getElementById('font-selector'); 
+const fontSelector = document.getElementById('font-selector');
 const editor = document.getElementById('editor');
 let undoStack = [];
 let redoStack = [];
@@ -18,7 +18,7 @@ function createTextBox(content = "Text") {
   textBox.style.top = "50px";
   textBox.style.left = "50px";
   textBox.style.fontSize = `${fontSize}px`;
-  textBox.style.fontFamily = fontSelector.value; 
+  textBox.style.fontFamily = fontSelector.value;
 
   enableDragging(textBox);
 
@@ -31,41 +31,45 @@ function createTextBox(content = "Text") {
 }
 
 function enableDragging(element) {
+  let isDragging = false; 
+  let offsetX, offsetY; 
+
   element.addEventListener('mousedown', (e) => {
-    const offsetX = e.clientX - element.offsetLeft;
-    const offsetY = e.clientY - element.offsetTop;
-
-    function moveAt(pageX, pageY) {
-      const editorRect = editor.getBoundingClientRect();
-      const textRect = element.getBoundingClientRect();
-
-      let newLeft = pageX - offsetX;
-      let newTop = pageY - offsetY;
-
-      if (newLeft < 0) newLeft = 0;
-      if (newTop < 0) newTop = 0;
-      if (newLeft + textRect.width > editorRect.width)
-        newLeft = editorRect.width - textRect.width;
-      if (newTop + textRect.height > editorRect.height)
-        newTop = editorRect.height - textRect.height;
-
-      element.style.left = `${newLeft}px`;
-      element.style.top = `${newTop}px`;
-    }
-
-    function onMouseMove(event) {
-      moveAt(event.pageX, event.pageY);
-    }
+    isDragging = true;
+    offsetX = e.clientX - element.offsetLeft;
+    offsetY = e.clientY - element.offsetTop;
 
     document.addEventListener('mousemove', onMouseMove);
-
-    element.onmouseup = () => {
-      document.removeEventListener('mousemove', onMouseMove);
-      element.onmouseup = null;
-    };
+    document.addEventListener('mouseup', onMouseUp);
   });
 
-  element.ondragstart = () => false;
+  function onMouseMove(e) {
+    if (!isDragging) return;
+
+    const editorRect = editor.getBoundingClientRect();
+    const textRect = element.getBoundingClientRect();
+
+    let newLeft = e.clientX - offsetX;
+    let newTop = e.clientY - offsetY;
+
+    if (newLeft < 0) newLeft = 0;
+    if (newTop < 0) newTop = 0;
+    if (newLeft + textRect.width > editorRect.width)
+      newLeft = editorRect.width - textRect.width;
+    if (newTop + textRect.height > editorRect.height)
+      newTop = editorRect.height - textRect.height;
+
+    element.style.left = `${newLeft}px`;
+    element.style.top = `${newTop}px`;
+  }
+
+  function onMouseUp() {
+    isDragging = false; 
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('mouseup', onMouseUp);
+  }
+
+  element.ondragstart = () => false; 
 }
 
 document.getElementById('undo').addEventListener('click', () => {
@@ -139,4 +143,3 @@ fontSelector.addEventListener('change', () => {
 function attachDraggingToExistingTextBoxes() {
   document.querySelectorAll('.text-box').forEach(enableDragging);
 }
-
